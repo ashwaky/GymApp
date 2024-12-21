@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 export default function Hero() {
   return (
@@ -16,10 +17,7 @@ export default function Hero() {
           personal fitness assistant
         </span>
       </p>
-      <button className="px-8 mx-auto py-4 rounded-md border-[2px] bg-slate-950 border-blue-400 border-solid blueShadow duration-200">
-        {" "}
-        Begin
-      </button>
+      <Button text={"Get Started"}></Button>
     </div>
   );
 }

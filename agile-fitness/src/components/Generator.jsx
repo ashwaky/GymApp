@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SectionWrapper from "./SectionWrapper";
 import { WORKOUTS } from "../utils/agilefitness";
 import { SCHEMES } from "../utils/agilefitness";
+import Button from "./Button";
 
 function Header(props) {
   const { index, title, description } = props;
@@ -20,9 +21,7 @@ function Header(props) {
 
 export default function Generator() {
   const [showModal, setShowModal] = useState(false);
-  const [poison, setPoison] = useState("individual");
-  const [muscles, setMuscles] = useState([]);
-  const [goal, setGoal] = useState("strength_power");
+
   // let showModal = false;
 
   function toggleModal() {
@@ -30,19 +29,26 @@ export default function Generator() {
   }
 
   function updateMuscles(muscleGroup) {
+    if (muscles.includes(muscleGroup)) {
+      setMuscles(muscles.filter((val) => val !== muscleGroup));
+      return;
+    }
+
     if (muscles.length > 2) {
       return;
     }
 
     if (poison !== "individual") {
       setMuscles([muscleGroup]);
+      setShowModal(false);
       return;
     }
-    if (muscles.includes(muscleGroup)) {
-      setMuscles(muscles.filter((val) => val !== muscleGroup));
-      return;
+    setMuscles([...muscles, muscleGroup]);
+    if (muscles.length === 2) {
+      setShowModal(false);
     }
   }
+
   return (
     <SectionWrapper
       header={"generate your workout"}
@@ -57,10 +63,13 @@ export default function Generator() {
         {Object.keys(WORKOUTS).map((type, typeIndex) => {
           return (
             <button
-              onClick={() => setPoison(type)}
+              onClick={() => {
+                setMuscles([]);
+                setPoison(type);
+              }}
               key={typeIndex}
               className={
-                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg " +
+                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 px-4 rounded-lg " +
                 (type === poison ? "border-blue-600" : "border-blue-400")
               }
             >
@@ -92,7 +101,9 @@ export default function Generator() {
             ).map((muscleGroup, muscleGroupIndex) => {
               return (
                 <button
-                  onClick={() => {}}
+                  onClick={() => {
+                    updateMuscles(muscleGroup);
+                  }}
                   key={muscleGroupIndex}
                   className={
                     "hover:text-blue-400 duration-200 " +
@@ -120,7 +131,7 @@ export default function Generator() {
               onClick={() => setGoal(scheme)}
               key={schemeIndex}
               className={
-                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 rounded-lg " +
+                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 px-4 rounded-lg " +
                 (scheme === goal ? "border-blue-600" : "border-blue-400")
               }
             >
@@ -129,6 +140,7 @@ export default function Generator() {
           );
         })}
       </div>
+      <Button text="Formulate"></Button>
     </SectionWrapper>
   );
 }

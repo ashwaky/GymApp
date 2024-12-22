@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SectionWrapper from "./SectionWrapper";
-import { WORKOUTS } from "../utils/agilefitness";
-import { SCHEMES } from "../utils/agilefitness";
+import { SCHEMES, WORKOUTS } from "../utils/agilefitness";
 import Button from "./Button";
 
 function Header(props) {
@@ -9,10 +8,10 @@ function Header(props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center gap-2">
-        <p className="font-semibold text-3xl sm:text-4xl md:text-5xl text-slate-400">
+        <p className="text-3xl sm:text-4xl md:text-5xl font-semibold text-slate-400">
           {index}
         </p>
-        <h4 className=" text-xl sm:text-2xl md:text-3xl">{title}</h4>
+        <h4 className="text-xl sm:text-2xl md:text-3xl">{title}</h4>
       </div>
       <p className="text-sm sm:text-base mx-auto">{description}</p>
     </div>
@@ -21,17 +20,17 @@ function Header(props) {
 
 export default function Generator(props) {
   const {
-    poison,
-    setPoison,
     muscles,
     setMuscles,
+    poison,
+    setPoison,
     goal,
     setGoal,
     updateWorkout,
   } = props;
   const [showModal, setShowModal] = useState(false);
 
-  // let showModal = false;
+  // let showModal = false
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -52,6 +51,7 @@ export default function Generator(props) {
       setShowModal(false);
       return;
     }
+
     setMuscles([...muscles, muscleGroup]);
     if (muscles.length === 2) {
       setShowModal(false);
@@ -60,13 +60,14 @@ export default function Generator(props) {
 
   return (
     <SectionWrapper
+      id={"generate"}
       header={"generate your workout"}
-      title={["It's", " Huge", " o'clock"]}
+      title={["It's", "Huge", "o'clock"]}
     >
       <Header
         index={"01"}
         title={"Pick your poison"}
-        description={"Select the workout you want"}
+        description={"Select the workout you wish to endure."}
       />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {Object.keys(WORKOUTS).map((type, typeIndex) => {
@@ -76,11 +77,11 @@ export default function Generator(props) {
                 setMuscles([]);
                 setPoison(type);
               }}
-              key={typeIndex}
               className={
-                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 px-4 rounded-lg " +
-                (type === poison ? "border-blue-600" : "border-blue-400")
+                "bg-slate-950 border  duration-200 px-4 hover:border-blue-600 py-3 rounded-lg " +
+                (type === poison ? " border-blue-600" : " border-blue-400")
               }
+              key={typeIndex}
             >
               <p className="capitalize">{type.replaceAll("_", " ")}</p>
             </button>
@@ -127,29 +128,31 @@ export default function Generator(props) {
             })}
           </div>
         )}
-      </div>{" "}
+      </div>
       <Header
         index={"03"}
-        title={"Become the beast"}
-        description={"Select your goal"}
+        title={"Become Juggernaut"}
+        description={"Select your ultimate objective."}
       />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {Object.keys(SCHEMES).map((scheme, schemeIndex) => {
           return (
             <button
-              onClick={() => setGoal(scheme)}
-              key={schemeIndex}
+              onClick={() => {
+                setGoal(scheme);
+              }}
               className={
-                "bg-slate-950 border border-blue-400 duration-200 hover:border-blue-600 py-3 px-4 rounded-lg " +
-                (scheme === goal ? "border-blue-600" : "border-blue-400")
+                "bg-slate-950 border  duration-200 hover:border-blue-600 py-3 rounded-lg px-4 " +
+                (scheme === goal ? " border-blue-600" : " border-blue-400")
               }
+              key={schemeIndex}
             >
               <p className="capitalize">{scheme.replaceAll("_", " ")}</p>
             </button>
           );
         })}
       </div>
-      <Button func={updateWorkout} text="Formulate"></Button>
+      <Button func={updateWorkout} text={"Formulate"}></Button>
     </SectionWrapper>
   );
 }
